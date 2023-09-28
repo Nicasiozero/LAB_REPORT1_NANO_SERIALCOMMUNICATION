@@ -1,0 +1,820 @@
+[
+    {
+        "id": "186727314b500876",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f7fd014791b07117",
+        "type": "ui_slider",
+        "z": "186727314b500876",
+        "name": "",
+        "label": "R",
+        "tooltip": "",
+        "group": "6293d40934c0ce10",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "all",
+        "topic": "R",
+        "topicType": "str",
+        "min": 0,
+        "max": "255",
+        "step": 1,
+        "className": "",
+        "x": 550,
+        "y": 120,
+        "wires": [
+            [
+                "5d336f7fe222bda6"
+            ]
+        ]
+    },
+    {
+        "id": "421409288c40b3a9",
+        "type": "ui_slider",
+        "z": "186727314b500876",
+        "name": "",
+        "label": "G",
+        "tooltip": "",
+        "group": "6293d40934c0ce10",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "all",
+        "topic": "G",
+        "topicType": "str",
+        "min": 0,
+        "max": "255",
+        "step": 1,
+        "className": "",
+        "x": 550,
+        "y": 160,
+        "wires": [
+            [
+                "5d336f7fe222bda6"
+            ]
+        ]
+    },
+    {
+        "id": "0334fdb9d1dc7535",
+        "type": "ui_slider",
+        "z": "186727314b500876",
+        "name": "",
+        "label": "B",
+        "tooltip": "",
+        "group": "6293d40934c0ce10",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "all",
+        "topic": "B",
+        "topicType": "str",
+        "min": 0,
+        "max": "255",
+        "step": 1,
+        "className": "",
+        "x": 550,
+        "y": 220,
+        "wires": [
+            [
+                "5d336f7fe222bda6"
+            ]
+        ]
+    },
+    {
+        "id": "5d336f7fe222bda6",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "dataManager",
+        "func": "let array = [0,0,0,0,0];\n\nif(msg.payload == 'ON'){\n    context.set(\"state\",1);\n    msg.topic = \"ON\";\n}\nelse if(msg.payload == 'F'){\n    context.set(\"state\",2);\n    msg.topic = \"FAST BLINK\";\n}\nelse if(msg.payload == 'S'){\n    context.set(\"state\",3);\n    msg.topic = \"SLOW BLINK\";\n}\nelse if(msg.payload == 'OFF' ){\n   context.set(\"state\",0);\n   msg.topic = \"OFF\";\n}\n\nif (msg.topic == 'R') {\n    context.set(\"red\", msg.payload);\n    array[0] = 0;\n}\nelse if (msg.topic == 'G') {\n    context.set(\"green\", msg.payload);\n    array[1] = 0;\n}\nelse if (msg.topic == 'B') {\n    context.set(\"blue\", msg.payload);\n    array[2] = 0;\n}\nelse if (msg.topic == 'D') {\n    context.set(\"duty\", msg.payload);\n    array[4] = 0;\n}\n\n\n\n\n\narray[0] = (array[0] != null && context.get(\"red\")!= null) ? context.get(\"red\") : 0;\narray[1] = (array[1] != null && context.get(\"green\") != null) ? context.get(\"green\"): 0;\narray[2] = (array[2] != null && context.get(\"blue\") != null) ? context.get(\"blue\"): 0;\narray[3] = (array[3] != null && context.get(\"state\") != null) ? context.get(\"state\"): 0;\narray[4] = (array[4] != null && context.get(\"duty\") != null) ? context.get(\"duty\"): 0;\nmsg.payload = array.toString();\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 240,
+        "wires": [
+            [
+                "c9d7c7366e0bd5bd",
+                "b24e0354d70df7d5",
+                "a739cf1936a5513f",
+                "93f280f3febede09"
+            ]
+        ]
+    },
+    {
+        "id": "c9d7c7366e0bd5bd",
+        "type": "file",
+        "z": "186727314b500876",
+        "name": "dataLog",
+        "filename": "/home/nicasio/Desktop/New Folder/text.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 1200,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b24e0354d70df7d5",
+        "type": "serial out",
+        "z": "186727314b500876",
+        "name": "",
+        "serial": "d037c7ba3fc74e12",
+        "x": 1190,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "e0475497987415c5",
+        "type": "ui_slider",
+        "z": "186727314b500876",
+        "name": "",
+        "label": "DUTY CYCLE",
+        "tooltip": "%",
+        "group": "6293d40934c0ce10",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "outs": "all",
+        "topic": "D",
+        "topicType": "str",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "className": "",
+        "x": 580,
+        "y": 280,
+        "wires": [
+            [
+                "5d336f7fe222bda6",
+                "df33a6f63dda2e06",
+                "6213f427611ba3e0",
+                "4a1b5f6499c162e8"
+            ]
+        ]
+    },
+    {
+        "id": "98b9d786b8d3261f",
+        "type": "ui_text",
+        "z": "186727314b500876",
+        "group": "6293d40934c0ce10",
+        "order": 11,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "DATA TO ARDUINO :",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1420,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "55b3eba7aeb9cd2c",
+        "type": "ui_text",
+        "z": "186727314b500876",
+        "group": "6293d40934c0ce10",
+        "order": 12,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "MODE",
+        "format": "{{msg.topic}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1370,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "d59fc995170665d8",
+        "type": "ui_button",
+        "z": "186727314b500876",
+        "name": "",
+        "group": "6293d40934c0ce10",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "FAST BLINK",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "F",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 590,
+        "y": 480,
+        "wires": [
+            [
+                "5d336f7fe222bda6"
+            ]
+        ]
+    },
+    {
+        "id": "ca2a56e8945585af",
+        "type": "ui_button",
+        "z": "186727314b500876",
+        "name": "",
+        "group": "6293d40934c0ce10",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "SLOW BLINK",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "S",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 600,
+        "y": 520,
+        "wires": [
+            [
+                "5d336f7fe222bda6"
+            ]
+        ]
+    },
+    {
+        "id": "492b6b88eabb40f0",
+        "type": "ui_text",
+        "z": "186727314b500876",
+        "group": "6293d40934c0ce10",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "BUTTON DATA:",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": true,
+        "font": "Arial,Arial,Helvetica,sans-serif",
+        "fontSize": 16,
+        "color": "#a51d2d",
+        "x": 1140,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "b73d63c05170b4fe",
+        "type": "serial in",
+        "z": "186727314b500876",
+        "name": "",
+        "serial": "d037c7ba3fc74e12",
+        "x": 750,
+        "y": 660,
+        "wires": [
+            [
+                "179eb1c52f9b387d",
+                "e520a05d1a8ac24f"
+            ]
+        ]
+    },
+    {
+        "id": "7c117c4e2c709dbb",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "clear text",
+        "func": "if(msg.topic == \"clear\"){\n    msg.payload = \"\";\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 740,
+        "wires": [
+            [
+                "492b6b88eabb40f0"
+            ]
+        ]
+    },
+    {
+        "id": "1d7636e3ddc5564f",
+        "type": "ui_button",
+        "z": "186727314b500876",
+        "name": "",
+        "group": "6293d40934c0ce10",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "CLEAR",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "clear",
+        "topicType": "str",
+        "x": 540,
+        "y": 740,
+        "wires": [
+            [
+                "7c117c4e2c709dbb",
+                "08d6a48fe048239c",
+                "7cfc841f676eb62f"
+            ]
+        ]
+    },
+    {
+        "id": "08d6a48fe048239c",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "clear control slider",
+        "func": "if(msg.topic == \"clear\"){\n    msg.payload = 0;\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 360,
+        "wires": [
+            [
+                "f7fd014791b07117",
+                "421409288c40b3a9",
+                "0334fdb9d1dc7535",
+                "e0475497987415c5",
+                "5d336f7fe222bda6"
+            ]
+        ]
+    },
+    {
+        "id": "df33a6f63dda2e06",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "setDutyCycle",
+        "func": "let data = msg.payload;\nmsg.payload = data/100 * 254;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 320,
+        "wires": [
+            [
+                "f7fd014791b07117",
+                "421409288c40b3a9",
+                "0334fdb9d1dc7535"
+            ]
+        ]
+    },
+    {
+        "id": "179eb1c52f9b387d",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "msgFillterBtn",
+        "func": "if (isNaN(Number(msg.payload))) {\n    return msg\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 660,
+        "wires": [
+            [
+                "492b6b88eabb40f0"
+            ]
+        ]
+    },
+    {
+        "id": "e520a05d1a8ac24f",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "msgFillterDutyCycle",
+        "func": "if (!isNaN(Number(msg.payload))) {\n    msg.payload = Number(msg.payload);\n    return msg\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 600,
+        "wires": [
+            [
+                "e0475497987415c5"
+            ]
+        ]
+    },
+    {
+        "id": "6aada956a45e720d",
+        "type": "ui_switch",
+        "z": "186727314b500876",
+        "name": "",
+        "label": "ON/OFF",
+        "tooltip": "",
+        "group": "6293d40934c0ce10",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 580,
+        "y": 420,
+        "wires": [
+            [
+                "5d336f7fe222bda6"
+            ]
+        ]
+    },
+    {
+        "id": "a739cf1936a5513f",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "modeShow",
+        "func": "\nif(!(msg.topic == 'clear' || msg.topic == 'R' || msg.topic == 'G' || msg.topic == 'B' || msg.topic == 'D')){\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 160,
+        "wires": [
+            [
+                "55b3eba7aeb9cd2c"
+            ]
+        ]
+    },
+    {
+        "id": "93f280f3febede09",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "statusShow",
+        "func": "var array = msg.payload.split(\",\");\n\nvar text = \"R: \"+ array[0] + \", G: \" + array[1] + \", B: \"+ array[2] + \", MODE: \" + array[3] + \", DUTY CYCLE: \" + array[4];\nmsg.payload = text;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 200,
+        "wires": [
+            [
+                "98b9d786b8d3261f"
+            ]
+        ]
+    },
+    {
+        "id": "7cfc841f676eb62f",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "clear control on/off",
+        "func": "if(msg.topic == \"clear\"){\n    msg.payload = 'OFF';\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 420,
+        "wires": [
+            [
+                "6aada956a45e720d"
+            ]
+        ]
+    },
+    {
+        "id": "6213f427611ba3e0",
+        "type": "ui_gauge",
+        "z": "186727314b500876",
+        "name": "",
+        "group": "1a9d2a51f7f264ac",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Duty Cycle",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "35",
+        "seg2": "65",
+        "diff": false,
+        "className": "",
+        "x": 1410,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "594f5df9ed5d0cba",
+        "type": "inject",
+        "z": "186727314b500876",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.02",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 510,
+        "y": 920,
+        "wires": [
+            [
+                "cbb9500e7ca78e55"
+            ]
+        ]
+    },
+    {
+        "id": "cbb9500e7ca78e55",
+        "type": "delay",
+        "z": "186727314b500876",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "40",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 770,
+        "y": 920,
+        "wires": [
+            [
+                "23c3613db5bf593a",
+                "4a1b5f6499c162e8"
+            ]
+        ]
+    },
+    {
+        "id": "23c3613db5bf593a",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "function 1",
+        "func": "if(msg.payload == 50){\n    msg.payload = 0;\n}\nelse{\n    msg.payload = msg.payload + 1\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 1020,
+        "wires": [
+            [
+                "cbb9500e7ca78e55"
+            ]
+        ]
+    },
+    {
+        "id": "3ede972db4d12331",
+        "type": "ui_chart",
+        "z": "186727314b500876",
+        "name": "SIGNAL",
+        "group": "1a9d2a51f7f264ac",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "label": "SIGNAL",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "-1",
+        "ymax": "5",
+        "removeOlder": "10",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#ff7f0e",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1200,
+        "y": 920,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4a1b5f6499c162e8",
+        "type": "function",
+        "z": "186727314b500876",
+        "name": "function 2",
+        "func": "if(msg.topic == 'D'){\n    context.set(\"percent\", msg.payload / 100);\n}\nif(msg.payload <= (Math.round(context.get(\"percent\") * 50))){\n    msg.payload = 5;\n}\nelse{\n    msg.payload = 0;\n}\n\nif (context.get(\"percent\") == 0){\n    msg.payload = 0;\n}\nelse if (context.get(\"percent\") == 1){\n    msg.payload = 5;\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 920,
+        "wires": [
+            [
+                "3ede972db4d12331"
+            ]
+        ]
+    },
+    {
+        "id": "8355ae9cfdd37250",
+        "type": "comment",
+        "z": "186727314b500876",
+        "name": "organizing data",
+        "info": "",
+        "x": 960,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "764736bb3cf7e3b9",
+        "type": "comment",
+        "z": "186727314b500876",
+        "name": "display",
+        "info": "",
+        "x": 1150,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "072a649a1d570cce",
+        "type": "comment",
+        "z": "186727314b500876",
+        "name": "display",
+        "info": "",
+        "x": 1370,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "0eef71628b74b3af",
+        "type": "comment",
+        "z": "186727314b500876",
+        "name": "connect to arduino",
+        "info": "",
+        "x": 1210,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "7537345402308be0",
+        "type": "ui_spacer",
+        "z": "186727314b500876",
+        "name": "spacer",
+        "group": "6293d40934c0ce10",
+        "order": 1,
+        "width": 12,
+        "height": 1
+    },
+    {
+        "id": "3e1419a1830a4117",
+        "type": "ui_spacer",
+        "z": "186727314b500876",
+        "name": "spacer",
+        "group": "1a9d2a51f7f264ac",
+        "order": 2,
+        "width": 12,
+        "height": 1
+    },
+    {
+        "id": "dada5bfcf1d72228",
+        "type": "ui_spacer",
+        "z": "186727314b500876",
+        "name": "spacer",
+        "group": "1a9d2a51f7f264ac",
+        "order": 4,
+        "width": 12,
+        "height": 1
+    },
+    {
+        "id": "6293d40934c0ce10",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "8dcdadfcfbab1940",
+        "order": 2,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": "display:flex;"
+    },
+    {
+        "id": "d037c7ba3fc74e12",
+        "type": "serial-port",
+        "serialport": "/dev/ttyUSB0",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "bin",
+        "out": "char",
+        "addchar": "\\n",
+        "responsetimeout": "5"
+    },
+    {
+        "id": "1a9d2a51f7f264ac",
+        "type": "ui_group",
+        "name": "Group 2",
+        "tab": "8dcdadfcfbab1940",
+        "order": 2,
+        "disp": true,
+        "width": 12
+    },
+    {
+        "id": "8dcdadfcfbab1940",
+        "type": "ui_tab",
+        "name": "ARDUINO NANO SERIALCOMMUNICATION",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
