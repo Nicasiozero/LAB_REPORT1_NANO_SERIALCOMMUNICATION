@@ -30,14 +30,6 @@ void setup() {
   oldSlider = map(analogRead(SLIDER), 0, 1023, 0, 100);
 }
 
-void serialEvent() {
-  String buffer = Serial.readStringUntil('\n');
-  rgb[0] = getValue(buffer, ',', 0).toInt();
-  rgb[1] = getValue(buffer, ',', 1).toInt();
-  rgb[2] = getValue(buffer, ',', 2).toInt();
-  rgb[3] = getValue(buffer, ',', 3).toInt();
-  rgb[4] = getValue(buffer, ',', 4).toInt();
-}
 void loop() {
   sliderData = map(analogRead(SLIDER), 0, 1023, 0, 100);
   if(abs(sliderData - oldSlider) >= 3){
@@ -81,6 +73,15 @@ void loop() {
 
 int ledMap(int LV) {  //Set a new min max value. rgb led active low;
   return map(LV, 0, 255, 255, 0);
+}
+
+void serialEvent() {
+  String buffer = Serial.readStringUntil('\n');
+  rgb[0] = getValue(buffer, ',', 0).toInt();
+  rgb[1] = getValue(buffer, ',', 1).toInt();
+  rgb[2] = getValue(buffer, ',', 2).toInt();
+  rgb[3] = getValue(buffer, ',', 3).toInt();
+  rgb[4] = getValue(buffer, ',', 4).toInt();
 }
 
 String getValue(String data, char separator, int index) {  //split data from index and separator
